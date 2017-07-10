@@ -14,27 +14,17 @@ public class BallUpdate : MonoBehaviour
     public float spawnY = -1.2385f;
     PaddleMove pm;
     Rigidbody2D paddleRB;
-    //Vector2 xDir, yDir;
-    //Vector2 rb.velocity = Vector2.zero;
-    //Vector2 xDir_origin1, xDir_origin2, yDir_origin1, yDir_origin2;
-    //Vector2 dir;
     LayerMask ignoreLayer;
     int blockCount;
     float winTimer = 0;
     public float winDelay = 0.5f;
     bool won = false;
     BlockHealth bh;
-    //bool xBounce = false, yBounce = false;
-    //RaycastHit2D hitX, hitY;
-    //RaycastHit2D hitX1, hitX2, hitY1, hitY2;
-    //RaycastHit2D diagHit;
     int powerup;
     int sceneNum;
     public GameObject ballPrefab;
     float xOffset = 0;
     ScoreUpdate su;
-    //Vector3 contactPoint, contactPoint2, center;
-    //Vector2 rectSize;
 
     // Use this for initialization
     void Start ()
@@ -44,8 +34,7 @@ public class BallUpdate : MonoBehaviour
         GameObject paddle = GameObject.FindGameObjectWithTag("Player");
         paddleRB = paddle.GetComponent<Rigidbody2D>();
         pm = paddle.GetComponent<PaddleMove>();
-        blockCount = GameObject.FindGameObjectsWithTag("Block").Length
-            + GameObject.FindGameObjectsWithTag("MetalBlock").Length;
+        blockCount = GameObject.FindGameObjectsWithTag("Block").Length;
         su = GameObject.FindGameObjectWithTag("Background").GetComponent<ScoreUpdate>();
 	}
 
@@ -132,34 +121,6 @@ public class BallUpdate : MonoBehaviour
     {
         if (rb.velocity.magnitude != 0)
         {
-            //xDir = new Vector2(rb.velocity.x, 0).normalized;
-            //yDir = new Vector2(0, rb.velocity.y).normalized;
-            //ignoreLayer = ~(1 << LayerMask.NameToLayer("Ball"));
-            //xBounce = false;
-            //yBounce = false;
-            //center = collision.collider.bounds.center;
-            //contactPoint = collision.contacts[0].point;
-            //contactPoint2 = collision.contacts[collision.contacts.Length - 1].point;
-            //rectSize = collision.collider.bounds.extents;
-
-            //if (Physics2D.Raycast(contactPoint, xDir, 0.02f, ignoreLayer))
-            //{
-            //    xBounce = true;
-            //}
-            //else if (Physics2D.Raycast(contactPoint2, xDir, 0.02f, ignoreLayer))
-            //{
-            //    xBounce = true;
-            //}
-            //if (Physics2D.Raycast(contactPoint, yDir, 0.02f, ignoreLayer))
-            //{
-            //    yBounce = true;
-            //}
-            //else if (Physics2D.Raycast(contactPoint2, yDir, 0.02f, ignoreLayer))
-            //{
-            //    yBounce = true;
-            //}
-            //rb.velocity = calcBounce(rb.velocity);
-
             if (collision.gameObject.tag.Equals("Player"))
             {
                 if (!pm.Sticky)
@@ -222,8 +183,11 @@ public class BallUpdate : MonoBehaviour
             pm.StartSticking();
             print("Start Sticking");
         }
-        blockCount = GameObject.FindGameObjectsWithTag("Block").Length
-            + GameObject.FindGameObjectsWithTag("MetalBlock").Length - 1;
+        if (block.tag.Equals("Block"))
+        {
+            blockCount = GameObject.FindGameObjectsWithTag("Block").Length
+                /*+ GameObject.FindGameObjectsWithTag("MetalBlock").Length*/ - 1;
+        }
         Destroy(block);
         print("Blocks left: " + blockCount);
     }
